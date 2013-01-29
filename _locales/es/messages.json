@@ -1,0 +1,50 @@
+﻿{
+  "wowheadPrefix": 			{ "message": "es" },
+
+  "armor": 					{ "message": "armadura" },
+
+  "intellect": 				{ "message": "intelecto" },
+  "strength": 				{ "message": "fuerza" },
+  "stamina": 				{ "message": "aguante" },
+  "spirit": 				{ "message": "espíritu" },
+  "agility": 				{ "message": "agilidad" },
+
+  "short_intellect": 		{ "message": "int" },
+  "short_strength": 		{ "message": "fuerza" },
+  "short_stamina":			{ "message": "aguan" },
+  "short_spirit": 			{ "message": "esp" },
+  "short_agility": 			{ "message": "agil" },
+
+  "attack_power": 			{ "message": "poder de ataque" },
+  "critical_strike": 		{ "message": "golpe crítico" },
+  "dodge": 					{ "message": "esquivar" },
+  "expertise": 				{ "message": "pericia" },
+  "haste": 					{ "message": "celeridad" },
+  "hit": 					{ "message": "golpe" },
+  "mastery": 				{ "message": "maestría" },
+  "parry": 					{ "message": "parada" },
+  "spell_power":			{ "message": "poder con hechizos" },
+
+  "short_attack_power": 	{ "message": "ataq" },
+  "short_critical_strike": 	{ "message": "crít" },
+  "short_dodge": 			{ "message": "esquiv" },
+  "short_expertise": 		{ "message": "peric" },
+  "short_haste": 			{ "message": "cel" },
+  "short_hit": 				{ "message": "golpe" },
+  "short_mastery": 			{ "message": "maest" },
+  "short_parry": 			{ "message": "par" },
+  "short_spell_power":		{ "message": "hechi" },
+
+  "PvP_Power": 				{ "message": "PvP Power" },
+  "PvP_Resilience": 		{ "message": "temple" },
+  
+  "honor_points": 			{ "message": "Puntos de honor" },
+  "justice_points": 		{ "message": "Puntos de justicia" },
+  "valor_points": 			{ "message": "Puntos de valor" },
+  "conquest_points": 		{ "message": "Puntos de conquista" },
+
+  "friendly": 				{ "message": "" },
+  "honored": 				{ "message": "" },
+  "revered": 				{ "message": "" },
+  "exalted": 				{ "message": "" }
+}

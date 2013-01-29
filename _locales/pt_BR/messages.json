@@ -1,0 +1,50 @@
+﻿{
+  "wowheadPrefix": 			{ "message": "pt_BR" },
+
+  "armor": 					{ "message": "Armadura" },
+
+  "intellect": 				{ "message": "Intelecto" },
+  "strength": 				{ "message": "Força" },
+  "stamina": 				{ "message": "Vigor" },
+  "spirit": 				{ "message": "Espírito" },
+  "agility": 				{ "message": "Agilidade" },
+
+  "short_intellect": 		{ "message": "Int" },
+  "short_strength": 		{ "message": "For" },
+  "short_stamina":			{ "message": "Vig" },
+  "short_spirit": 			{ "message": "Espí" },
+  "short_agility": 			{ "message": "Agil" },
+
+  "attack_power": 			{ "message": "poder de ataque" },
+  "critical_strike": 		{ "message": "acerto crítico" },
+  "dodge": 					{ "message": "Esquiva" },
+  "expertise": 				{ "message": "aptidão" },
+  "haste": 					{ "message": "aceleração" },
+  "hit": 					{ "message": "acerto" },
+  "mastery": 				{ "message": "maestria" },
+  "parry": 					{ "message": "Aparo" },
+  "spell_power":			{ "message": "poder mágico" },
+
+  "short_attack_power": 	{ "message": "ataque" },
+  "short_critical_strike": 	{ "message": "crít" },
+  "short_dodge": 			{ "message": "Esquiva" },
+  "short_expertise": 		{ "message": "aptidão" },
+  "short_haste": 			{ "message": "acel" },
+  "short_hit": 				{ "message": "acerto" },
+  "short_mastery": 			{ "message": "maest" },
+  "short_parry": 			{ "message": "Aparo" },
+  "short_spell_power":		{ "message": "mágico" },
+
+  "PvP_Power": 				{ "message": "poder de jxj" },
+  "PvP_Resilience": 		{ "message": "resiliência" },
+  
+  "honor_points": 			{ "message": "Pontos de Honra" },
+  "justice_points": 		{ "message": "Pontos de Justiça" },
+  "valor_points": 			{ "message": "Pontos de Bravura" },
+  "conquest_points": 		{ "message": "Pontos de Dominação" },
+
+  "friendly": 				{ "message": "" },
+  "honored": 				{ "message": "" },
+  "revered": 				{ "message": "" },
+  "exalted": 				{ "message": "" }
+}

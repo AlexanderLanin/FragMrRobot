@@ -1,0 +1,14 @@
+body {
+	background-color: #DDD;
+}
+
+#content{
+	background-color: white;
+	border: 1px solid #DDD;
+	margin: 20px auto 20px;
+	padding: 12px;
+	width: 90%;
+	max-width: 900px;
+	-webkit-border-radius: 12px;
+	box-shadow: 0px 0px 10px #000;
+}

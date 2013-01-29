@@ -1,0 +1,50 @@
+﻿{
+  "wowheadPrefix": 			{ "message": "ru" },
+
+  "armor": 					{ "message": "броня" },
+
+  "intellect": 				{ "message": "интеллект" },
+  "strength": 				{ "message": "сила" },
+  "stamina": 				{ "message": "выносливость" },
+  "spirit": 				{ "message": "дух" },
+  "agility": 				{ "message": "ловкость" },
+
+  "short_intellect": 		{ "message": "инт." },
+  "short_strength": 		{ "message": "сила" },
+  "short_stamina":			{ "message": "выносл." },
+  "short_spirit": 			{ "message": "дух" },
+  "short_agility": 			{ "message": "ловк." },
+
+  "attack_power": 			{ "message": "сила атаки" },
+  "critical_strike": 		{ "message": "критический удар" },
+  "dodge": 					{ "message": "уклонение" },
+  "expertise": 				{ "message": "мастерство" },
+  "haste": 					{ "message": "скорость" },
+  "hit": 					{ "message": "меткость" },
+  "mastery": 				{ "message": "искуссность" },
+  "parry": 					{ "message": "парирование" },
+  "spell_power":			{ "message": "Сила заклинаний" },
+
+  "short_attack_power": 	{ "message": "атак." },
+  "short_critical_strike": 	{ "message": "крит" },
+  "short_dodge": 			{ "message": "уклон." },
+  "short_expertise": 		{ "message": "мастер." },
+  "short_haste": 			{ "message": "скор." },
+  "short_hit": 				{ "message": "метк." },
+  "short_mastery": 			{ "message": "искусс." },
+  "short_parry": 			{ "message": "пар." },
+  "spell_power":			{ "message": "заклин." },
+
+  "PvP_Power": 				{ "message": "ПвП сила" },
+  "PvP_Resilience": 		{ "message": "ПвП устойчивость" },
+  
+  "honor_points": 			{ "message": "Очки чести" },
+  "justice_points": 		{ "message": "Очки справедливости" },
+  "valor_points": 			{ "message": "Очки доблести" },
+  "conquest_points": 		{ "message": "Очки завоеваний" },
+  
+  "friendly": 				{ "message": "" },
+  "honored": 				{ "message": "" },
+  "revered": 				{ "message": "" },
+  "exalted": 				{ "message": "" }
+}

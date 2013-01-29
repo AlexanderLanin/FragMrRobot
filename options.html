@@ -1,0 +1,62 @@
+﻿<html>
+<head>
+<script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="jquery-ui-1.9.2.custom.min.js"></script>
+<script type="text/javascript" src="options.js"></script>
+<link type="text/css" href="jquery-ui-1.9.2.custom.css" rel="stylesheet" />
+<link type="text/css" href="options.css" rel="stylesheet" />
+<title>FragMrRobot Options</title>
+
+</head>
+
+<body>
+
+<div id="content">
+	<h1>FragMrRobot</h1>
+
+	<div id="tabs">
+	    <ul>
+			<li><a href="#tabs-1">Options</a></li>
+			<li><a href="#tabs-2">Cache Info</a></li>
+		</ul>
+			
+		<div id="tabs-1">
+			<h2>Translate</h2>
+			Into: <select id="lang">
+			 <!-- <option value="www">English (disabled)</option> -->
+			 <option value="de">Deutsch</option>
+			 <option value="es">Español</option>
+			 <option value="fr">Français</option>
+			 <option value="pt">Português Brasileiro</option>
+			 <option value="ru">Русский</option>
+			</select><br />
+			<br />
+			<input type="checkbox" id="translateAskMrRobotItemNames" default="true" label="AskMrRobot item names" /><br />
+			<input type="checkbox" id="useDictionary" default="false" label="AskMrRobot stats (beta!)" /><br />
+			<input type="checkbox" id="translateIcyVeinsItemNames" default="true" label="Icy Veins item names" /><br />
+			<input type="checkbox" id="translateIcyVeinsSpellNames" default="true" label="Icy Veins spell names" /><br />
+			<h2>Fix Links</h2>
+			<input type="checkbox" id="fixLinksIcyVeins" default="true" label="Change IcyVeins links to wowhead (localized)." /><br />
+			<input type="checkbox" id="fixLinksAskMrRobot" default="true" label="Add wowhead (localized) link to AskMrRobot items." /><br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<div id="status"></div>
+			<button id="saveOptions" onSuccess="Options saved">Save</button>
+			<button id="resetOptions" style="margin-left: 100px" onSuccess="All options are now defaults">Reset all to Defaults</button>
+		</div>
+		
+		<div id="tabs-2">
+			FragMrRobot total cache size: <span id="cacheSizeUsed"></span> / <span id="cacheSizeTotal"></span> KiB<br />
+			<div id="cacheSizeProgressbar"></div>
+			<br />
+			<span id="entriesInCache"></span> entries cached for faster access.<br />
+			<br />
+			<br />
+			<button id="clearCache">clear cache</button>
+		</div>
+</div>
+
+</body>
+</html>
