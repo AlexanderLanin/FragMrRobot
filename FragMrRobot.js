@@ -13,7 +13,7 @@ chrome.storage.sync.get(['language', 'translateAskMrRobotItemNames', 'fixLinksAs
 	options.language = response.language || chrome.i18n.getMessage("wowheadPrefix");
 	options.translateItemNames = response.translateAskMrRobotItemNames == undefined ? true : response.translateAskMrRobotItemNames;
 	options.fixLinks = response.fixLinksAskMrRobot == undefined ? true : response.fixLinksAskMrRobot;
-	options.useDictionary = response.useDictionary == undefined ? false : response.useDictionary;
+	options.useDictionary = response.useDictionary == undefined ? (options.language == 'de' || options.language == 'ru') : response.useDictionary;
 
 	translateAll();
 });
@@ -27,7 +27,7 @@ function translateAll()
 	
 	// translate stats box
 	if(options.useDictionary) {
-		$(".wow-stats-table .name div").each(function() {
+		$(".wow-stats-table .name div, #panelWeightEditor table.main td[class='lbl']").each(function() {
 			var THIS = $(this);
 
 			if(THIS.attr("translated") != undefined) return;
@@ -35,6 +35,7 @@ function translateAll()
 			var text = THIS.text().toLowerCase().replace(" ", "_");
 			if(text == "physical_hit")	text = "hit";
 			if(text == "physical_crit")	text = "critical_strike";
+			if(text == "crit")			text = "critical_strike";
 			if(text == "melee_haste")	text = "haste";
 			if(text == "pvp_resil")		text = "pvp_resilience";
 			THIS.attr('lookup_text', text);

@@ -35,20 +35,25 @@ function updateCacheValues() {
 
 function loadOptions () {
 
-	chrome.storage.sync.get('language', function(response) {
-		$("#lang").val(response.language || chrome.i18n.getMessage("wowheadPrefix")).attr("selected", true);
-	});
-	
-	
 	// checkboxes: load default, overwrite if set
 	$('[type="checkbox"]').each(function (index, element) {
 		$(this).prop('checked', $(this).attr('default') == "true");
 	});
 
-	chrome.storage.sync.get(checkboxesList, function(response) {
-		for(var key in response) {
-			$('#' + key).prop('checked', response[key]);
-		}
+
+	chrome.storage.sync.get('language', function(response) {
+		var lang = response.language || chrome.i18n.getMessage("wowheadPrefix");
+		$("#lang").val(lang).attr("selected", true);
+
+		// de and ru are fine, enable by default
+		if(lang == 'de' || lang == 'ru')
+			$("#useDictionary").prop('checked', true);
+
+		chrome.storage.sync.get(checkboxesList, function(response) {
+			for(var key in response) {
+				$('#' + key).prop('checked', response[key]);
+			}
+		});
 	});
 }
 
