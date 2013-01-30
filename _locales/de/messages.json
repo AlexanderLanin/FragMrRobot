@@ -17,7 +17,7 @@
   "short_agility": 			{ "message": "Beweglichkeit" },
 
   "attack_power": 			{ "message": "Angriffskraft" },
-  "critical_strike": 		{ "message": "Kritischer Trefferwert" },
+  "crit":			 		{ "message": "Krit." },
   "dodge": 					{ "message": "Ausweichen" },
   "expertise": 				{ "message": "Waffenkunde" },
   "haste": 					{ "message": "Tempo" },
@@ -27,7 +27,7 @@
   "spell_power":			{ "message": "Zaubermacht" },
 
   "short_attack_power": 	{ "message": "Angriffsk." },
-  "short_critical_strike": 	{ "message": "Krit" },
+  "short_crit": 			{ "message": "Krit" },
   "short_dodge": 			{ "message": "Ausw" },
   "short_expertise": 		{ "message": "Waff" },
   "short_haste": 			{ "message": "Tempo" },

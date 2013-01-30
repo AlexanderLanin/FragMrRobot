@@ -34,8 +34,8 @@ function translateAll()
 
 			var text = THIS.text().toLowerCase().replace(" ", "_");
 			if(text == "physical_hit")	text = "hit";
-			if(text == "physical_crit")	text = "critical_strike";
-			if(text == "crit")			text = "critical_strike";
+			if(text == "critical_strike")text = "crit";
+			if(text == "physical_crit")	text = "crit";
 			if(text == "melee_haste")	text = "haste";
 			if(text == "pvp_resil")		text = "pvp_resilience";
 			THIS.attr('lookup_text', text);

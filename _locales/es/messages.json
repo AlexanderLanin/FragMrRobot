@@ -16,7 +16,7 @@
   "short_agility": 			{ "message": "agil" },
 
   "attack_power": 			{ "message": "poder de ataque" },
-  "critical_strike": 		{ "message": "golpe crítico" },
+  "crit":			 		{ "message": "golpe crítico" },
   "dodge": 					{ "message": "esquivar" },
   "expertise": 				{ "message": "pericia" },
   "haste": 					{ "message": "celeridad" },
@@ -26,7 +26,7 @@
   "spell_power":			{ "message": "poder con hechizos" },
 
   "short_attack_power": 	{ "message": "ataq" },
-  "short_critical_strike": 	{ "message": "crít" },
+  "short_crit": 			{ "message": "crít" },
   "short_dodge": 			{ "message": "esquiv" },
   "short_expertise": 		{ "message": "peric" },
   "short_haste": 			{ "message": "cel" },

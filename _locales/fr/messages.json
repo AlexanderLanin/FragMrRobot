@@ -16,7 +16,7 @@
   "short_agility": 			{ "message": "Agil" },
 
   "attack_power": 			{ "message": "puissance d’attaque" },
-  "critical_strike": 		{ "message": "coup critique" },
+  "crit":			 		{ "message": "coup critique" },
   "dodge": 					{ "message": "Esquive" },
   "expertise": 				{ "message": "d'expertise" },
   "haste": 					{ "message": "hâte" },
@@ -26,7 +26,7 @@
   "spell_power":			{ "message": "puissance des sorts" },
 
   "short_attack_power": 	{ "message": "attaque" },
-  "short_critical_strike": 	{ "message": "crit" },
+  "short_crit":			 	{ "message": "crit" },
   "short_dodge": 			{ "message": "Esqui" },
   "short_expertise": 		{ "message": "exp" },
   "short_haste": 			{ "message": "hâte" },

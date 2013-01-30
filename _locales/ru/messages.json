@@ -16,7 +16,7 @@
   "short_agility": 			{ "message": "ловк." },
 
   "attack_power": 			{ "message": "сила атаки" },
-  "critical_strike": 		{ "message": "критический удар" },
+  "crit": 					{ "message": "критический удар" },
   "dodge": 					{ "message": "уклонение" },
   "expertise": 				{ "message": "мастерство" },
   "haste": 					{ "message": "скорость" },
@@ -26,7 +26,7 @@
   "spell_power":			{ "message": "Сила заклинаний" },
 
   "short_attack_power": 	{ "message": "атак." },
-  "short_critical_strike": 	{ "message": "крит" },
+  "short_crit": 			{ "message": "крит" },
   "short_dodge": 			{ "message": "уклон." },
   "short_expertise": 		{ "message": "мастер." },
   "short_haste": 			{ "message": "скор." },
