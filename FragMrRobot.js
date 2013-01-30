@@ -18,6 +18,18 @@ chrome.storage.sync.get(['language', 'translateAskMrRobotItemNames', 'fixLinksAs
 	translateAll();
 });
 
+if (typeof String.prototype.startsWith != 'function') {
+  String.prototype.startsWith = function (str){
+    return this.slice(0, str.length) == str;
+  };
+}
+
+if (typeof String.prototype.endsWith != 'function') {
+  String.prototype.endsWith = function (str){
+    return this.slice(-str.length) == str;
+  };
+}
+
 
 function translateAll()
 {
@@ -39,13 +51,18 @@ function translateAll()
 			if(text == "physical_crit")	text = "crit";
 			if(text == "melee_haste")	text = "haste";
 			if(text == "pvp_resil")		text = "pvp_resilience";
+			
+			var prefix = "";
+			if(text.startsWith("mh_")) { prefix = "MH "; text = text.substr(3); }
+			if(text.startsWith("oh_")) { prefix = "OH "; text = text.substr(3); }
+			
 			THIS.attr('lookup_text', text);
 
 			var translated = chrome.i18n.getMessage(text);
 			if(translated != "") {
 				THIS.attr("orig", orig);
 				THIS.attr("translated", options.language)
-				THIS.text(translated);
+				THIS.text(prefix + translated);
 			} else {
 				THIS.attr("translated", "no translation for: " + text)
 			}
