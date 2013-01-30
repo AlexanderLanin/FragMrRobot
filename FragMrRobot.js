@@ -32,7 +32,8 @@ function translateAll()
 
 			if(THIS.attr("translated") != undefined) return;
 
-			var text = THIS.text().toLowerCase().replace(" ", "_");
+			var orig = THIS.text();
+			var text = orig.toLowerCase().replace(" ", "_");
 			if(text == "physical_hit")	text = "hit";
 			if(text == "critical_strike")text = "crit";
 			if(text == "physical_crit")	text = "crit";
@@ -40,12 +41,13 @@ function translateAll()
 			if(text == "pvp_resil")		text = "pvp_resilience";
 			THIS.attr('lookup_text', text);
 
-			text = chrome.i18n.getMessage(text);
-			if(text != "") {
+			var translated = chrome.i18n.getMessage(text);
+			if(translated != "") {
+				THIS.attr("orig", orig);
 				THIS.attr("translated", options.language)
-				THIS.text(text);
+				THIS.text(translated);
 			} else {
-				THIS.attr("translated", "error1")
+				THIS.attr("translated", "no translation for: " + text)
 			}
 		});
 
