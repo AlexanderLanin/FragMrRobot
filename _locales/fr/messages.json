@@ -17,10 +17,13 @@
 
   "attack_power": 			{ "message": "puissance d’attaque" },
   "crit":			 		{ "message": "coup critique" },
+  "spell_crit":		 		{ "message": "coup critique" },
   "dodge": 					{ "message": "Esquive" },
   "expertise": 				{ "message": "d'expertise" },
   "haste": 					{ "message": "hâte" },
+  "spell_haste": 			{ "message": "hâte" },
   "hit": 					{ "message": "toucher" },
+  "spell_hit":				{ "message": "toucher" },
   "mastery": 				{ "message": "maîtrise" },
   "parry": 					{ "message": "Parade" },
   "spell_power":			{ "message": "puissance des sorts" },

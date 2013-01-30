@@ -17,10 +17,13 @@
 
   "attack_power": 			{ "message": "сила атаки" },
   "crit": 					{ "message": "критический удар" },
+  "spell_crit":	 			{ "message": "критический удар" },
   "dodge": 					{ "message": "уклонение" },
   "expertise": 				{ "message": "мастерство" },
   "haste": 					{ "message": "скорость" },
+  "spell_haste":			{ "message": "скорость" },
   "hit": 					{ "message": "меткость" },
+  "spell_hit": 				{ "message": "меткость" },
   "mastery": 				{ "message": "искуссность" },
   "parry": 					{ "message": "парирование" },
   "spell_power":			{ "message": "Сила заклинаний" },

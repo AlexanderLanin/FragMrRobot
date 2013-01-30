@@ -18,10 +18,13 @@
 
   "attack_power": 			{ "message": "Angriffskraft" },
   "crit":			 		{ "message": "Krit." },
+  "spell_crit": 			{ "message": "Krit. (Zauber)" },
   "dodge": 					{ "message": "Ausweichen" },
   "expertise": 				{ "message": "Waffenkunde" },
   "haste": 					{ "message": "Tempo" },
+  "spell_haste":			{ "message": "Tempo (Zauber)" },
   "hit": 					{ "message": "Trefferwert" },
+  "spell_hit": 				{ "message": "Zaubertrefferw." },
   "mastery": 				{ "message": "Meisterschaft" },
   "parry": 					{ "message": "Parieren" },
   "spell_power":			{ "message": "Zaubermacht" },

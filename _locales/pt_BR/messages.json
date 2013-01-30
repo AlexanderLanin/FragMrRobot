@@ -17,10 +17,13 @@
 
   "attack_power": 			{ "message": "poder de ataque" },
   "crit":			 		{ "message": "acerto crítico" },
+  "spell_crit":		 		{ "message": "acerto crítico" },
   "dodge": 					{ "message": "Esquiva" },
   "expertise": 				{ "message": "aptidão" },
   "haste": 					{ "message": "aceleração" },
+  "spell_haste":			{ "message": "aceleração" },
   "hit": 					{ "message": "acerto" },
+  "spell_hit": 				{ "message": "acerto" },
   "mastery": 				{ "message": "maestria" },
   "parry": 					{ "message": "Aparo" },
   "spell_power":			{ "message": "poder mágico" },

@@ -17,10 +17,13 @@
 
   "attack_power": 			{ "message": "poder de ataque" },
   "crit":			 		{ "message": "golpe crítico" },
+  "spell_crit":		 		{ "message": "golpe crítico" },
   "dodge": 					{ "message": "esquivar" },
   "expertise": 				{ "message": "pericia" },
   "haste": 					{ "message": "celeridad" },
+  "spell_haste":			{ "message": "celeridad" },
   "hit": 					{ "message": "golpe" },
+  "spell_hit":				{ "message": "golpe" },
   "mastery": 				{ "message": "maestría" },
   "parry": 					{ "message": "parada" },
   "spell_power":			{ "message": "poder con hechizos" },
