@@ -25,7 +25,7 @@
   "spell_haste":			{ "message": "скор. заклинаний" },
   "hit": 					{ "message": "меткость" },
   "spell_hit": 				{ "message": "метк. заклинаний" },
-  "mastery": 				{ "message": "искуссность" },
+  "mastery": 				{ "message": "искусность" },
   "parry": 					{ "message": "парирование" },
   "spell_power":			{ "message": "Сила заклинаний" },
 
