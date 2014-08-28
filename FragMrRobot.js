@@ -30,45 +30,49 @@ if (typeof String.prototype.endsWith != 'function') {
   };
 }
 
-
-function translateAll()
+function translate(selection)
 {
-	// settings need to be read first
-	if(options.language == undefined) return;
+	$(selection).each(function() {
+		translateHelper(this);
+	});
+}
 
+function translateHelper(elem)
+{
+	var ELEM = $(elem);
 	
-	// translate stats box
-	if(options.useDictionary) {
-		$(".wow-stats-table .name div, #panelWeightEditor table.main td[class='lbl']").each(function() {
-			var THIS = $(this);
+	if(ELEM.attr("translated") != undefined) return;
 
-			if(THIS.attr("translated") != undefined) return;
+	var orig = ELEM.text();
+	var key = orig.toLowerCase().replace(" ", "_");
 
-			var orig = THIS.text();
-			var text = orig.toLowerCase().replace(" ", "_");
-			if(text == "physical_hit")	text = "hit";
-			if(text == "critical_strike")text = "crit";
-			if(text == "physical_crit")	text = "crit";
-			if(text == "melee_haste")	text = "haste";
-			if(text == "pvp_resil")		text = "pvp_resilience";
-			
-			var prefix = "";
-			if(text.startsWith("mh_")) { prefix = "MH "; text = text.substr(3); }
-			if(text.startsWith("oh_")) { prefix = "OH "; text = text.substr(3); }
-			
-			THIS.attr('lookup_text', text);
+	var prefix = "";
+	if(key.startsWith("mh_")) { prefix = "MH "; key = key.substr(3); }
+	if(key.startsWith("oh_")) { prefix = "OH "; key = key.substr(3); }
 
-			var translated = chrome.i18n.getMessage(text);
-			if(translated != "") {
-				THIS.attr("orig", orig);
-				THIS.attr("translated", options.language)
-				THIS.text(prefix + translated);
-			} else {
-				THIS.attr("translated", "no translation for: " + text)
-			}
-		});
+	var translated = chrome.i18n.getMessage(key);
+	if(translated != "")
+	{
+		ELEM.text(prefix + translated);
+		ELEM.attr("orig", orig);
+		ELEM.attr("translated", options.language);
+	} else {
+		ELEM.attr("translated", "no translation for " + key)
+	}
+}
 
-		$(".wow-mods-table .reforge div, .wow-mods-table .enchant div").each(function() {
+function translateWithDictionary()
+{
+	translate(".wow-stats-table .name div");
+	translate("#panelWeightEditor table.main td[class='lbl']");
+	translate(".wow-mods-table .reforge div");
+	translate(".wow-mods-table .enchant div");
+	translate("#cboGearFinderCurrency option");
+
+	// Main Hand, Off Hand, Head, Neck, Shoulder, ..., Trinket 2
+	translate(".wow-items-table td.slot");
+
+			/*
 			var THIS = $(this);
 
 			if(THIS.attr("translated") != undefined) return;
@@ -101,19 +105,11 @@ function translateAll()
 
 			THIS.attr("translated", options.language)
 			THIS.text(text);
-		});
+			*/
+}
 
-		
-		$("#cboGearFinderCurrency option").each(function() {
-			var THIS = $(this);
-			
-			var translated = chrome.i18n.getMessage(THIS.text().toLowerCase().replace(" ", "_"));
-			if(translated != "")
-				THIS.text(translated);
-		});
-	}
-	
-	if(options.fixLinks) {
+function fixLinks()
+{
 		$("a[href^='http://www.wowdb.com/']").each(function(){
 			var THIS = $(this);
 			
@@ -135,10 +131,31 @@ function translateAll()
 				THIS.attr("translated", "link_error");
 			}
 		});
+}
+
+function translateAll()
+{
+	// settings need to be read first
+	if(options.language == undefined) return;
+
+	if(options.useDictionary)
+	{
+		translateWithDictionary();
+	}
+	
+	if(options.fixLinks)
+	{
+		fixLinks();
 	}
 
-	if(options.translateItemNames == false) return;
+	if(options.translateItemNames)
+	{
+		translateItems();
+	}
+}
 
+function translateItems()
+{
 	$("[data-tr-tooltip-id]").each(function(){
 		var THIS = $(this);
 
