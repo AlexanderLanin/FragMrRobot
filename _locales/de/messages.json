@@ -50,5 +50,8 @@
   "friendly": 				{ "message": "Freundlich" },
   "honored": 				{ "message": "Wohlwollend" },
   "revered": 				{ "message": "Respektvoll" },
-  "exalted": 				{ "message": "Ehrfürchtig" }
+  "exalted": 				{ "message": "Ehrfürchtig" },
+
+  "food": 					{ "message": "Essen" },
+  "flask": 					{ "message": "Trinken" }
 }

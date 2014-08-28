@@ -2,6 +2,7 @@
   "wowheadPrefix": 			{ "message": "ru" },
 
   "armor": 					{ "message": "броня" },
+  "all_stats": 				{ "message": "ко всем статам" },
 
   "intellect": 				{ "message": "интеллект" },
   "strength": 				{ "message": "сила" },
@@ -34,8 +35,8 @@
   "short_expertise": 		{ "message": "мастер." },
   "short_haste": 			{ "message": "скор." },
   "short_hit": 				{ "message": "метк." },
-  "short_mastery": 			{ "message": "искусс." },
-  "short_parry": 			{ "message": "пар." },
+  "short_mastery": 			{ "message": "искус." },
+  "short_parry": 			{ "message": "парир." },
   "spell_power":			{ "message": "заклин." },
 
   "PvP_Power": 				{ "message": "ПвП сила" },
@@ -46,8 +47,11 @@
   "valor_points": 			{ "message": "Очки доблести" },
   "conquest_points": 		{ "message": "Очки завоеваний" },
   
-  "friendly": 				{ "message": "" },
-  "honored": 				{ "message": "" },
-  "revered": 				{ "message": "" },
-  "exalted": 				{ "message": "" }
+  "friendly": 				{ "message": "Дружелюбие" },
+  "honored": 				{ "message": "Уважение" },
+  "revered": 				{ "message": "Почтение" },
+  "exalted": 				{ "message": "Превознесение" },
+
+  "food": 					{ "message": "Еда" },
+  "flask": 					{ "message": "Настой" }
 }

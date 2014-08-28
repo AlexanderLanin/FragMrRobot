@@ -85,10 +85,10 @@ function translateAll()
 				}
 
 				if(word == "Exp")	word = "expertise";
-				if(word == "Crit")	word = "critical_strike";
 				if(word == "Str")	word = "strength";
 				if(word == "Int")	word = "intellect";
 				if(word == "Stam")	word = "stamina";
+				if(word == "Agi")	word = "agility";
 
 				var translated = chrome.i18n.getMessage("short_" + word);
 
