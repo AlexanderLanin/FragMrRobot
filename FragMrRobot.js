@@ -30,82 +30,147 @@ if (typeof String.prototype.endsWith != 'function') {
   };
 }
 
-function translate(selection)
+if (typeof String.prototype.contains != 'function') {
+  String.prototype.contains = function(str){
+    return this.indexOf(str) != -1;
+  };
+}
+
+function isNumeric(num){
+    return !isNaN(num)
+}
+
+function translateKey(key, preferShort)
 {
-	$(selection).each(function() {
-		translateHelper(this);
+	// return chrome.i18n.getMessage(key);
+
+	if(preferShort && translations["short_" + key] != undefined && translations["short_" + key][options.language] != undefined)
+	{
+		return translations["short_" + key][options.language];
+	}
+	
+	if(translations[key] != undefined && translations[key][options.language] != undefined)
+	{
+		return translations[key][options.language];
+	}
+	
+	return "";
+}
+
+function translateString(string, preferShort)
+{
+	var words = string.toLowerCase().trim().split(" ");
+
+	var prefix = "";
+	var suffix = "";
+
+	if(words[0] == "mh" || words[0] == "oh" || isNumeric(words[0]))
+	{
+		prefix = string.split(" ")[0] + " ";
+		words.splice(0, 1);
+	}
+	
+	if(words[words.length-1] == "rating")
+	{
+		words.splice(words.length-1, 1);
+	}
+
+	if(words[words.length-1] == "(?)")
+	{
+		suffix = " " + string.split(" ")[words.length-1];
+		words.splice(words.length-1, 1);
+	}
+
+	var key = words.join('_');
+	var translated = translateKey(key, preferShort);
+	
+	if(translated == "") return "ERROR:" + key;
+
+	return prefix + translated + suffix;
+}
+
+function translateSelector(selector, preferShort)
+{
+	$(selector).each(function() {
+		translateElement(this, preferShort);
 	});
 }
 
-function translateHelper(elem)
+function translateElement(elem, preferShort)
 {
 	var ELEM = $(elem);
 	
 	if(ELEM.attr("translated") != undefined) return;
 
 	var orig = ELEM.text();
-	var key = orig.toLowerCase().replace(" ", "_");
+	
+	if(orig == "") return;
 
-	var prefix = "";
-	if(key.startsWith("mh_")) { prefix = "MH "; key = key.substr(3); }
-	if(key.startsWith("oh_")) { prefix = "OH "; key = key.substr(3); }
+	var parts = [orig];
+	var sep = "";
+	if(orig.contains(" -> " ))  { sep = " -> "; parts = orig.split(sep); }
+	if(orig.contains(", "   ))  { sep = ", ";   parts = orig.split(sep); }
+	if(orig.contains(" and "))  { sep = ", ";   parts = orig.split(" and "); }
+	if(orig.contains(" > "  ))  { sep = " > ";  parts = orig.split(sep); }
 
-	var translated = chrome.i18n.getMessage(key);
-	if(translated != "")
+	var errors = "";
+
+	for(var i = 0; i != parts.length; i++)
 	{
-		ELEM.text(prefix + translated);
-		ELEM.attr("orig", orig);
-		ELEM.attr("translated", options.language);
-	} else {
-		ELEM.attr("translated", "no translation for " + key)
+		var translated = translateString(parts[i], preferShort);
+		
+		if(translated.startsWith("ERROR:"))
+		{
+			errors += "no translation found for " + translated;
+		}
+		else
+		{
+			parts[i] = translated;
+		}
 	}
+	
+	var translated = parts.join(sep);
+
+	if(errors != "")
+	{
+		ELEM.attr("errors", errors);
+	}
+	
+	ELEM.text(translated);
+	ELEM.attr("orig", orig);
+	ELEM.attr("translated", options.language);
 }
 
 function translateWithDictionary()
 {
-	translate(".wow-stats-table .name div");
-	translate("#panelWeightEditor table.main td[class='lbl']");
-	translate(".wow-mods-table .reforge div");
-	translate(".wow-mods-table .enchant div");
-	translate("#cboGearFinderCurrency option");
+	// Build Beschreibung
+	translateSelector("#panelSpecWeightsDesc", true);
 
+	// Rechte Spalte
+	translateSelector(".wow-stats-table .name div", false);
+
+	// Edit Weights
+	translateSelector("#panelWeightEditor table.main td[class='lbl']", false);
+	
+	translateSelector(".wow-mods-table .reforge div", true);
+	translateSelector(".wow-mods-table .enchant div", true);
+	translateSelector("#cboGearFinderCurrency option", true);
+
+	// Reforge bei item betrachtung (zB Gürtel)
+	// translateSelector("#panelGearEditorItem .reforge", false);
+	// wird scheinbar nachträglich geändert. beim laden steht da "not reforged"
+	
+	// Vergleich von Verzauberungen
+	translateSelector("#panelGearEditorList .ench-enchant", false);
+
+	// Vergleich von Gems (ja die heißen enchant)
+	translateSelector("#panelGearEditorList .enchant", false);
+	
+	// Vergleich von reforges
+	translateSelector("#panelGearEditorList .reforge-stat", false);
+	
 	// Main Hand, Off Hand, Head, Neck, Shoulder, ..., Trinket 2
-	translate(".wow-items-table td.slot");
-
-			/*
-			var THIS = $(this);
-
-			if(THIS.attr("translated") != undefined) return;
-
-			var words = THIS.text().split(" ");
-			var text = "";
-			
-			for(var i in words) {
-				var word = words[i];
-				var komma = false;
-				if(word.indexOf(',') > 0) {
-					komma = true;
-					word = word.substr(0, word.length - 1);
-				}
-
-				if(word == "Exp")	word = "expertise";
-				if(word == "Str")	word = "strength";
-				if(word == "Int")	word = "intellect";
-				if(word == "Stam")	word = "stamina";
-				if(word == "Agi")	word = "agility";
-
-				var translated = chrome.i18n.getMessage("short_" + word);
-
-				if(translated) {
-					text += translated + (komma ? ", " : " ");
-				} else {
-					text += words[i] + " ";
-				}
-			}
-
-			THIS.attr("translated", options.language)
-			THIS.text(text);
-			*/
+	translateSelector(".wow-items-table td.slot", true);
 }
 
 function fixLinks()

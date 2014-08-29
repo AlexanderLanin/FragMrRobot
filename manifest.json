@@ -13,7 +13,7 @@
   },
 
   "content_scripts": [ {
-      "js": [ "jquery-1.8.3.min.js", "FragMrRobot.js" ],
+      "js": [ "jquery-1.8.3.min.js", "translations.js", "FragMrRobot.js" ],
       "matches": [ "http://www.askmrrobot.com/wow/*" ],
       "run_at": "document_idle"
   },
