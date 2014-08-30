@@ -3,3 +3,47 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     chrome.pageAction.show(tabId);
   }
 });
+
+// Check whether new version is installed
+chrome.runtime.onInstalled.addListener(function(details){
+    var thisVersion = chrome.runtime.getManifest().version;
+
+	if(details.reason == "install")
+	{
+        console.log("This is a first install!");
+
+		// chrome.tabs.create({ url: "popup.html" });
+	}
+	else if(details.reason == "update")
+	{
+        console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
+
+		// too much, do not disturb user
+		// chrome.tabs.create({ url: "popup.html" });
+  
+		/* not working at all
+
+		chrome.notifications.getPermissionLevel(function(level) {
+			if(level == "granted") {
+				console.log("Notifications are enabled");
+
+				var notificationId = "";
+				var options = {
+				  type: "basic",
+				  iconUrl: "http://www.google.com/favicon.ico",
+				  title: "FragMrRobot updated",
+				  message: "Updated from " + details.previousVersion + " to " + thisVersion + "!",
+				  buttons: [{ title: "More Info" }]
+				}
+				var callback = function(newNotificationId) {
+					notificationId = newNotificationId;
+				};
+
+				chrome.notifications.create(notificationId, options, callback);
+			} else {
+				console.log("Notifications are not enabled");
+			}
+		});
+		*/
+    }
+});
