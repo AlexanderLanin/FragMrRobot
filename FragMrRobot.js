@@ -171,6 +171,11 @@ function translateWithDictionary()
 	
 	// Main Hand, Off Hand, Head, Neck, Shoulder, ..., Trinket 2
 	translateSelector(".wow-items-table td.slot", true);
+	
+	
+	
+	// trinket compare
+	translateSelector("#panelTrinketList .stats label", false);
 }
 
 function fixLinks()
