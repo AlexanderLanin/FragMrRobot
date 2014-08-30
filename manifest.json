@@ -32,7 +32,8 @@
 		"19" : "icon19.png",
 		"38" : "icon38.png"
     },
-    "default_title": "FragMrRobot"
+    "default_title": "FragMrRobot",
+    "default_popup": "popup.html"
   },
   
   "icons" : {
