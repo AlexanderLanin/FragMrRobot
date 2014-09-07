@@ -1,5 +1,11 @@
-﻿// Author: Alexander Lanin.
-// all rights reserved.
+﻿/**
+ This file is part of FragMrRobot.
+ 
+ FragMrRobot is distributed under The Q Public License Version (QPL-1.0).
+ 
+ You should have received a copy of the License along with this file.
+ If not, see http://opensource.org/licenses/QPL-1.0
+*/
 
 
 // Always cache ajax requests

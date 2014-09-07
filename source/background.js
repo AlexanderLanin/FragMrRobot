@@ -1,3 +1,12 @@
+/**
+ This file is part of FragMrRobot.
+ 
+ FragMrRobot is distributed under The Q Public License Version (QPL-1.0).
+ 
+ You should have received a copy of the License along with this file.
+ If not, see http://opensource.org/licenses/QPL-1.0
+*/
+
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   if (tab.url.indexOf('www.askmrrobot.com') > -1 || tab.url.indexOf('www.icy-veins.com') > -1) {
     chrome.pageAction.show(tabId);
