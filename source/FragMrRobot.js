@@ -70,9 +70,11 @@ function translateString(string, preferShort)
 	var prefix = "";
 	var suffix = "";
 
-	if(words[0] == "mh" || words[0] == "oh" || isNumeric(words[0]))
+    // then: shopping list
+    // Vendor - : drop locations for items
+	while(words[0] == "mh" || words[0] == "oh" || words[0] == "then" || words[0] == "vendor" || words[0] == "-" || isNumeric(words[0]))
 	{
-		prefix = string.split(" ")[0] + " ";
+		prefix += words[0] + " ";
 		words.splice(0, 1);
 	}
 	
@@ -106,7 +108,7 @@ function translateElement(elem, preferShort)
 {
 	var ELEM = $(elem);
 	
-	if(ELEM.attr("translated") != undefined) return;
+	if(ELEM.attr("dictionary") != undefined) return;
 
 	var orig = ELEM.text();
 	
@@ -127,7 +129,7 @@ function translateElement(elem, preferShort)
 		
 		if(translated.startsWith("ERROR:"))
 		{
-			errors += "no translation found for " + translated;
+			errors += "no translation found for " + translated + "; ";
 		}
 		else
 		{
@@ -144,7 +146,7 @@ function translateElement(elem, preferShort)
 	
 	ELEM.text(translated);
 	ELEM.attr("orig", orig);
-	ELEM.attr("translated", options.language + " via dictionary");
+	ELEM.attr("dictionary", options.language + " via dictionary");
 }
 
 function translateWithDictionary()
@@ -178,6 +180,18 @@ function translateWithDictionary()
 	// Main Hand, Off Hand, Head, Neck, Shoulder, ..., Trinket 2
 	translateSelector(".wow-items-table td.slot", true);
 	
+	// Drop Locations, especially for "1750 Justice Points"
+	translateSelector(".wow-mods-table td.loc div", true);
+	
+    
+    // reforges in shopping list
+    {
+        // Main Hand, Off Hand, Head, Neck, Shoulder, ..., Trinket 2
+        translateSelector("#panelShopActionsMain div.slot", false);
+
+        // Reforges
+        translateSelector("#panelShopActionsMain div.label-material", false);
+    }
 	
 	
 	// trinket compare
@@ -190,12 +204,12 @@ function fixLinks()
 			var THIS = $(this);
 			
 			// each link only once
-			if(THIS.attr("translated") != undefined) return;
+			if(THIS.attr("linkfix") != undefined) return;
 			
 			var href = THIS.attr("href");
 			var hrefArr = href.split("/");
 			if(hrefArr[3] == 'items') {
-				THIS.attr("translated", options.language + " via linkfix");
+				THIS.attr("linkfix", options.language + " via linkfix");
 				
 				if($(".label1", THIS).length == 0) {
 					THIS.after($("<a></a>").attr("href", "http://" + options.language + ".wowhead.com/item=" + hrefArr[4]).text(options.language + ".wowhead"));
@@ -204,7 +218,7 @@ function fixLinks()
 					THIS.attr("href", "http://" + options.language + ".wowhead.com/item=" + hrefArr[4]);
 				}
 			} else {
-				THIS.attr("translated", "link_error");
+				THIS.attr("linkfix", "link_error");
 			}
 		});
 }
@@ -254,8 +268,10 @@ function translateItem(item)
     if(item.children().length > 0)
     {
         translateInto = $(".name", item);
-    
-        // trinkets section
+        if(translateInto.length == 0) translateInto = $(".tr-text-qEpic:first-child", item);
+        if(translateInto.length == 0) translateInto = $(".tr-text-qRare:first-child", item);
+
+        // that's strange, but let's try first link before failing
         if(translateInto.length == 0)
         {
             translateInto = $("a:first-child", item);
@@ -264,7 +280,7 @@ function translateItem(item)
 
         if(translateInto.length == 0)
         {
-            item.attr("translated", "ERROR: element has children but none are div with class name");
+            item.attr("translated", "ERROR: element has children but the item itself was not found");
             return;
         }
     }
