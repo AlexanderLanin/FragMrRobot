@@ -134,7 +134,7 @@ function translateElement(elem, preferShort)
 			parts[i] = translated;
 		}
 	}
-	
+
 	var translated = parts.join(sep);
 
 	if(errors != "")
@@ -144,7 +144,7 @@ function translateElement(elem, preferShort)
 	
 	ELEM.text(translated);
 	ELEM.attr("orig", orig);
-	ELEM.attr("translated", options.language);
+	ELEM.attr("translated", options.language + " via dictionary");
 }
 
 function translateWithDictionary()
@@ -195,7 +195,7 @@ function fixLinks()
 			var href = THIS.attr("href");
 			var hrefArr = href.split("/");
 			if(hrefArr[3] == 'items') {
-				THIS.attr("translated", options.language);
+				THIS.attr("translated", options.language + " via linkfix");
 				
 				if($(".label1", THIS).length == 0) {
 					THIS.after($("<a></a>").attr("href", "http://" + options.language + ".wowhead.com/item=" + hrefArr[4]).text(options.language + ".wowhead"));
@@ -212,7 +212,10 @@ function fixLinks()
 function translateAll()
 {
 	// settings need to be read first
-	if(options.language == undefined) return;
+	if(options.language == undefined)
+    {
+        return;
+    }
 
 	if(options.useDictionary)
 	{
@@ -240,49 +243,66 @@ function translateItems()
 			return;
 		}
 
-		var translateInto = THIS;
-		var suffix = "";
-		
-		if(THIS.children().length > 0) {
-			translateInto = $(".name", THIS);
-			
-			// trinkets section
-			if(translateInto.length == 0 && THIS.children().length == 1) {
-				translateInto = $("a", THIS);
-				if(translateInto.text().indexOf(' (H)'  ) > 0) suffix = ' (H)';
-				if(translateInto.text().indexOf(' (LFR)') > 0) suffix = ' (LFR)';
-			}
-			
-			if(translateInto.length == 0) {
-				// has children but no name div
-				return;
-			}
-		}
+        translateItem(THIS);
+    });
+}
 
-		// translating once is enough
-		if(THIS.attr("translated") != undefined)
+function translateItem(item)
+{
+    var translateInto = item;
+    
+    if(item.children().length > 0)
+    {
+        translateInto = $(".name", item);
+    
+        // trinkets section
+        if(translateInto.length == 0)
+        {
+            translateInto = $("a:first-child", item);
+            item.attr("debug", "translating first link");
+        }
+
+        if(translateInto.length == 0)
+        {
+            item.attr("translated", "ERROR: element has children but none are div with class name");
+            return;
+        }
+    }
+
+	// translating once is enough
+	if(item.attr("translated") != undefined)
+    {
+		return;
+    }
+
+    
+    var suffix = "";
+    if(translateInto.text().indexOf(' (H)'  ) > 0) suffix = ' (H)';
+    if(translateInto.text().indexOf(' (LFR)') > 0) suffix = ' (LFR)';
+
+    
+	// fetch id
+	var tooltipId = item.attr("data-tr-tooltip-id");
+	var t = tooltipId.split("/");
+	if(t[0] != "item") {
+		t = tooltipId.split("_");
+		if(t[0] == "ench") return;
+
+		if(t[0] != "gem" /*&& t[0] != "ench"*/)
+		{
+			item.attr("translated", "error_type");
 			return;
-
-		// fetch id
-		var tooltipId = THIS.attr("data-tr-tooltip-id");
-		var t = tooltipId.split("/");
-		if(t[0] != "item") {
-			t = tooltipId.split("_");
-			if(t[0] == "ench") return;
-
-			if(t[0] != "gem" /*&& t[0] != "ench"*/)
-			{
-				THIS.attr("translated", "error_type");
-				return;
-			}
 		}
+	}
 
-		// mark as work in progress
-		THIS.attr("translated", "translating");
+	// mark as work in progress
+	item.attr("translated", "translating");
 
-		
-		// key for cache
-		var storageKey = 'cache_' + options.language + '_item_' + t[1];
+	
+	// key for cache
+	var storageKey = 'cache_' + options.language + '_item_' + t[1];
+    item.attr("cacheKey", storageKey);
+
 //		if(t[2] != undefined && (t[2][0] == 'r' && t[2][1] == ':')) {
 //			storageKey += "_" + t[2];
 //		}
@@ -294,20 +314,21 @@ function translateItems()
 //		}
 //		console.log(storageKey + " -> ");
 
-		chrome.storage.local.get(null, function(response) {
-
-			if(response[storageKey])
-			{
-				var translated = response[storageKey].replace(/\\'/g, "'");
-				translateInto.text(translated + suffix);
-				THIS.attr("translated", options.language);
-			}
-			else
-			{
-				var originalText = translateInto.text();
-				translateInto.text("translating...");
-				var linkUrl = "http://" + options.language + ".wowhead.com/item=" + t[1] + "&power";
-				
+	chrome.storage.local.get(null, function(response)
+    {
+		if(response[storageKey])
+		{
+			var translated = response[storageKey].replace(/\\'/g, "'");
+			translateInto.text(translated + suffix);
+            item.attr("translated", options.language + " via item name cache");
+            item.attr("cached", true);
+		}
+		else
+		{
+			var originalText = translateInto.text();
+			translateInto.text("translating...");
+			var linkUrl = "http://" + options.language + ".wowhead.com/item=" + t[1] + "&power";
+			
 //				if(t[2] != undefined && t[2].substring(0, 2) == 'r:') {
 //					linkUrl += '&rand=' + t[2].substring(2);
 //				}
@@ -318,40 +339,41 @@ function translateItems()
 //					linkUrl += '&rand=' + t[4].substring(2);
 //				}
 //				console.log(linkUrl);
+			
+			$.get(linkUrl, {}, function(data)
+            {
+				data = data.replace(/(\r\n|\n|\r)/gm, " ");
+				var fetchJsonRegex = /name_.*?: '(.*?)',/;
+				var match = fetchJsonRegex.exec(data);
 				
-				$.get(linkUrl, {}, function(data) {
-					data = data.replace(/(\r\n|\n|\r)/gm, " ");
-					var fetchJsonRegex = /name_.*?: '(.*?)',/;
-					var match = fetchJsonRegex.exec(data);
-					
-					if(match != null)
-					{
-						var translated = match[1];
-						translated = translated.replace(/\\'/g, "'");
+				if(match != null)
+				{
+					var translated = match[1];
+					translated = translated.replace(/\\'/g, "'");
 
-						var obj = {};
-						obj[storageKey] = translated;
-						chrome.storage.local.set(obj, function() {
-							if(chrome.runtime.lastError != undefined)
-							{
-								alert("error caching " + storageKey + " => " + translated + " :: " + chrome.runtime.lastError.message);
-							}
-						});
-						translateInto.text(translated + suffix);
-						THIS.attr("translated", options.language);
-					}
-					else
-					{
-						console.log("Translation failed: " + linkUrl);
-						translateInto.text("wowhead error");
-						THIS.attr("translated", "error_wowhead");
-						THIS.attr("orig", originalText);
-						
-						setTimeout(function() { translateInto.text(originalText); }, 3000);
-					}
-				}, 'text');
-			}
-		});
+					var obj = {};
+					obj[storageKey] = translated;
+					chrome.storage.local.set(obj, function() {
+						if(chrome.runtime.lastError != undefined)
+						{
+							console.log("error caching " + storageKey + " => " + translated + " :: " + chrome.runtime.lastError.message);
+						}
+					});
+					translateInto.text(translated + suffix);
+					item.attr("translated", options.language + " via wowhead");
+				}
+				else
+				{
+					console.log("Translation failed: " + linkUrl);
+					item.attr("translated", "error_wowhead");
+					item.attr("orig", originalText);
+					
+                    // show error and hide it again after 3 seconds
+                    translateInto.text("wowhead error");
+					setTimeout(function() { translateInto.text(originalText); }, 3000);
+				}
+			}, 'text');
+		}
 	});
 }
 
