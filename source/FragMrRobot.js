@@ -20,6 +20,7 @@ chrome.storage.sync.get(['language', 'translateAskMrRobotItemNames', 'fixLinksAs
 	options.translateItemNames = response.translateAskMrRobotItemNames == undefined ? true : response.translateAskMrRobotItemNames;
 	options.fixLinks = response.fixLinksAskMrRobot == undefined ? true : response.fixLinksAskMrRobot;
 	options.useDictionary = response.useDictionary == undefined ? (options.language == 'de' || options.language == 'ru') : response.useDictionary;
+	options.dictionaryLanguage = options.language == 'pt' ? 'pt_BR' : options.language;
 
 	translateAll();
 });
@@ -49,15 +50,14 @@ function isNumeric(num){
 function translateKey(key, preferShort)
 {
 	// return chrome.i18n.getMessage(key);
-
-	if(preferShort && translations["short_" + key] != undefined && translations["short_" + key][options.language] != undefined)
+	if(preferShort && translations["short_" + key] != undefined && translations["short_" + key][options.dictionaryLanguage] != undefined)
 	{
-		return translations["short_" + key][options.language];
+		return translations["short_" + key][options.dictionaryLanguage];
 	}
 	
-	if(translations[key] != undefined && translations[key][options.language] != undefined)
+	if(translations[key] != undefined && translations[key][options.dictionaryLanguage] != undefined)
 	{
-		return translations[key][options.language];
+		return translations[key][options.dictionaryLanguage];
 	}
 	
 	return "";
