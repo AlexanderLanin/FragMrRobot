@@ -249,7 +249,8 @@ function translateAll()
 
 function translateItems()
 {
-	$("[data-tr-tooltip-id]").each(function(){
+  // translate using tooltip
+	$("[data-tr-tooltip-id]").not("[translated]").each(function(){
 		var THIS = $(this);
 
 		// do not translate images
@@ -287,13 +288,6 @@ function translateItem(item)
             return;
         }
     }
-
-	// translating once is enough
-	if(item.attr("translated") != undefined)
-    {
-		return;
-    }
-
     
     var suffix = "";
     if(translateInto.text().indexOf(' (H)'  ) > 0) suffix = ' (H)';
