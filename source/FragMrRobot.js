@@ -257,12 +257,47 @@ function translateItems()
 		if(THIS.css("background-image") != "none") {
 			return;
 		}
+		
+    // fetch ID from tooltip to use to find the translation
+    var tooltipId = THIS.attr("data-tr-tooltip-id");
+    var t = tooltipId.split("/");
+    if(t[0] != "item") {
+      t = tooltipId.split("_");
+      // ID used to enchants are not the same of the wowhead, it's not possible to translate enchants using wowhead
+      if(t[0] == "ench") return;
+      
+      if(t[0] != "gem" /*&& t[0] != "ench"*/)
+      {
+	THIS.attr("translated", "error_type");
+	return;
+      }
+    }
 
-        translateItem(THIS);
+      translateItem(THIS, t[1]);
+    });
+    
+    // translate enchant material on shopping list
+    $(".link-container[href]").not("[data-tr-tooltip-id], [translated]").each(function(){
+      var THIS = $(this);
+      
+      // do not translate images
+      if(THIS.css("background-image") != "none") {
+	return;
+      }
+      
+      var href = THIS.attr("href");
+      var hrefArr = href.split("=");
+      var hrefArr2 = hrefArr[0].split("/");
+
+      if((hrefArr.length < 2) || (hrefArr2[3] != 'item')) {
+	return;
+      }
+      
+      translateItem(THIS, hrefArr[1]);
     });
 }
 
-function translateItem(item)
+function translateItem(item, itemID)
 {
     var translateInto = item;
     
@@ -293,27 +328,12 @@ function translateItem(item)
     if(translateInto.text().indexOf(' (H)'  ) > 0) suffix = ' (H)';
     if(translateInto.text().indexOf(' (LFR)') > 0) suffix = ' (LFR)';
 
-    
-	// fetch id
-	var tooltipId = item.attr("data-tr-tooltip-id");
-	var t = tooltipId.split("/");
-	if(t[0] != "item") {
-		t = tooltipId.split("_");
-		if(t[0] == "ench") return;
-
-		if(t[0] != "gem" /*&& t[0] != "ench"*/)
-		{
-			item.attr("translated", "error_type");
-			return;
-		}
-	}
-
 	// mark as work in progress
 	item.attr("translated", "translating");
 
 	
 	// key for cache
-	var storageKey = 'cache_' + options.language + '_item_' + t[1];
+	var storageKey = 'cache_' + options.language + '_item_' + itemID;
     item.attr("cacheKey", storageKey);
 
 //		if(t[2] != undefined && (t[2][0] == 'r' && t[2][1] == ':')) {
@@ -340,7 +360,7 @@ function translateItem(item)
 		{
 			var originalText = translateInto.text();
 			translateInto.text("translating...");
-			var linkUrl = "http://" + options.language + ".wowhead.com/item=" + t[1] + "&power";
+			var linkUrl = "http://" + options.language + ".wowhead.com/item=" + itemID + "&power";
 			
 //				if(t[2] != undefined && t[2].substring(0, 2) == 'r:') {
 //					linkUrl += '&rand=' + t[2].substring(2);
