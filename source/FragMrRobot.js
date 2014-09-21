@@ -270,6 +270,9 @@ function translateItem(item)
         translateInto = $(".name", item);
         if(translateInto.length == 0) translateInto = $(".tr-text-qEpic:first-child", item);
         if(translateInto.length == 0) translateInto = $(".tr-text-qRare:first-child", item);
+        if(translateInto.length == 0) translateInto = $(".tr-text-qLegendary:first-child", item);
+        if(translateInto.length == 0) translateInto = $(".tr-text-qUncommon:first-child", item);
+        if(translateInto.length == 0) translateInto = $(".tr-text-qCommon:first-child", item);	
 
         // that's strange, but let's try first link before failing
         if(translateInto.length == 0)
