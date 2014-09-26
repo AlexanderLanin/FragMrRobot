@@ -274,6 +274,27 @@ function translateItems()
 
         translateItem(THIS, t[1]);
     });
+    
+    // translate enchant material on shopping list
+    $(".link-container[href]").not("[data-tr-tooltip-id], [translated]").each(function(){
+        var THIS = $(this);
+                                                                              
+        // do not translate images
+        if(THIS.css("background-image") != "none") {
+            return;
+        }
+                                                                              
+        var href = THIS.attr("href");
+        var hrefArr = href.split("=");
+        var hrefArr2 = hrefArr[0].split("/");
+                                                                              
+        if((hrefArr.length < 2) || (hrefArr2[3] != 'item')) {
+            return;
+        }
+                                                                              
+        translateItem(THIS, hrefArr[1]);
+    });
+
 }
 
 function translateItem(item, itemID)
