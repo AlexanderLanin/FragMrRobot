@@ -257,12 +257,26 @@ function translateItems()
 		if(THIS.css("background-image") != "none") {
 			return;
 		}
+                                                       
+        // fetch id
+        var tooltipId = THIS.attr("data-tr-tooltip-id");
+        var t = tooltipId.split("/");
+           if(t[0] != "item") {
+              t = tooltipId.split("_");
+           if(t[0] == "ench") return;
+     
+           if(t[0] != "gem" /*&& t[0] != "ench"*/)
+           {
+              THIS.attr("translated", "error_type");
+              return;
+           }
+        }
 
-        translateItem(THIS);
+        translateItem(THIS, t[1]);
     });
 }
 
-function translateItem(item)
+function translateItem(item, itemID)
 {
     var translateInto = item;
     
@@ -273,7 +287,7 @@ function translateItem(item)
         if(translateInto.length == 0) translateInto = $(".tr-text-qRare:first-child", item);
         if(translateInto.length == 0) translateInto = $(".tr-text-qLegendary:first-child", item);
         if(translateInto.length == 0) translateInto = $(".tr-text-qUncommon:first-child", item);
-        if(translateInto.length == 0) translateInto = $(".tr-text-qCommon:first-child", item);	
+        if(translateInto.length == 0) translateInto = $(".tr-text-qCommon:first-child", item);
 
         // that's strange, but let's try first link before failing
         if(translateInto.length == 0)
@@ -294,26 +308,12 @@ function translateItem(item)
     if(translateInto.text().indexOf(' (LFR)') > 0) suffix = ' (LFR)';
 
     
-	// fetch id
-	var tooltipId = item.attr("data-tr-tooltip-id");
-	var t = tooltipId.split("/");
-	if(t[0] != "item") {
-		t = tooltipId.split("_");
-		if(t[0] == "ench") return;
-
-		if(t[0] != "gem" /*&& t[0] != "ench"*/)
-		{
-			item.attr("translated", "error_type");
-			return;
-		}
-	}
-
 	// mark as work in progress
 	item.attr("translated", "translating");
 
 	
 	// key for cache
-	var storageKey = 'cache_' + options.language + '_item_' + t[1];
+	var storageKey = 'cache_' + options.language + '_item_' + itemID;
     item.attr("cacheKey", storageKey);
 
 //		if(t[2] != undefined && (t[2][0] == 'r' && t[2][1] == ':')) {
@@ -340,7 +340,7 @@ function translateItem(item)
 		{
 			var originalText = translateInto.text();
 			translateInto.text("translating...");
-			var linkUrl = "http://" + options.language + ".wowhead.com/item=" + t[1] + "&power";
+			var linkUrl = "http://" + options.language + ".wowhead.com/item=" + itemID + "&power";
 			
 //				if(t[2] != undefined && t[2].substring(0, 2) == 'r:') {
 //					linkUrl += '&rand=' + t[2].substring(2);
