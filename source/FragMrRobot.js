@@ -19,7 +19,7 @@ chrome.storage.sync.get(['language', 'translateAskMrRobotItemNames', 'fixLinksAs
 	options.language = response.language || chrome.i18n.getMessage("wowheadPrefix");
 	options.translateItemNames = response.translateAskMrRobotItemNames == undefined ? true : response.translateAskMrRobotItemNames;
 	options.fixLinks = response.fixLinksAskMrRobot == undefined ? true : response.fixLinksAskMrRobot;
-	options.useDictionary = response.useDictionary == undefined ? (options.language == 'de' || options.language == 'ru') : response.useDictionary;
+	options.useDictionary = response.useDictionary == undefined ? (options.language == 'de' || options.language == 'ru' || options.language == 'pt') : response.useDictionary;
 
 	translateAll();
 });
