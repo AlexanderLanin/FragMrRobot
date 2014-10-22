@@ -161,7 +161,14 @@ function translateWithDictionary()
 	translateSelector("#panelWeightEditor table.main td[class='lbl']", false);
 	
 	translateSelector(".wow-mods-table .reforge div", true);
-	translateSelector(".wow-mods-table .enchant div", true);
+    
+    // overview page:
+	translateSelector(".wgr-enchtext", true);
+    
+    // at the bottom of the overview page
+    translateSelector(".wst-lbl", true);
+    
+    
 	translateSelector("#cboGearFinderCurrency option", true);
 
 	// Reforge bei item betrachtung (zB Gürtel)
@@ -171,14 +178,17 @@ function translateWithDictionary()
 	// Vergleich von Verzauberungen
 	translateSelector("#panelGearEditorList .ench-enchant", false);
 
-	// Vergleich von Gems (ja die heißen enchant)
-	translateSelector("#panelGearEditorList .enchant", false);
+	// Gem comparison -> +Stats
+	translateSelector(".wlst-tmtxt", false);
+
+    // Gem comparison -> head, shoulder etc
+    translateSelector(".wlst-slotlbl", true);
 	
 	// Vergleich von reforges
 	translateSelector("#panelGearEditorList .reforge-stat", false);
 	
 	// Main Hand, Off Hand, Head, Neck, Shoulder, ..., Trinket 2
-	translateSelector(".wow-items-table td.slot", true);
+    translateSelector(".wgr-slot", true);
 	
 	// Drop Locations, especially for "1750 Justice Points"
 	translateSelector(".wow-mods-table td.loc div", true);
@@ -221,6 +231,8 @@ function fixLinks()
 				THIS.attr("linkfix", "link_error");
 			}
 		});
+
+    $(".cwowdb").css("line-height", "18px");
 }
 
 function translateAll()
@@ -303,12 +315,7 @@ function translateItem(item, itemID)
     
     if(item.children().length > 0)
     {
-        translateInto = $(".name", item);
-        if(translateInto.length == 0) translateInto = $(".tr-text-qEpic:first-child", item);
-        if(translateInto.length == 0) translateInto = $(".tr-text-qRare:first-child", item);
-        if(translateInto.length == 0) translateInto = $(".tr-text-qLegendary:first-child", item);
-        if(translateInto.length == 0) translateInto = $(".tr-text-qUncommon:first-child", item);
-        if(translateInto.length == 0) translateInto = $(".tr-text-qCommon:first-child", item);
+        translateInto = $(".wlst-tname", item);
 
         // that's strange, but let's try first link before failing
         if(translateInto.length == 0)
