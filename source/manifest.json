@@ -13,12 +13,12 @@
   },
 
   "content_scripts": [ {
-      "js": [ "jquery-1.8.3.min.js", "translations.js", "FragMrRobot.js" ],
       "matches": [ "http://www.askmrrobot.com/wow/*" ],
+      "js": [ "jquery-2.1.4.min.js", "translations.js", "FragMrRobot.js" ],
       "run_at": "document_idle"
   },
   {
-      "js": [ "jquery-1.8.3.min.js", "EisigeAdern.js" ],
+      "js": [ "jquery-2.1.4.min.js", "EisigeAdern.js" ],
       "matches": [ "http://www.icy-veins.com/*" ],
       "run_at": "document_idle"
   }  ],
@@ -39,5 +39,7 @@
   "icons" : {
     "48" : "icon48.png",
     "128" : "icon128.png"
-  }
+  },
+
+  "author": "Alexander Lanin"
 }
