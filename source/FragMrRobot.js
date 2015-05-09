@@ -206,39 +206,98 @@ function translateWithDictionary()
    translateSelector("#panelTrinketList .stats label", false);
 }
 
+/// @param obj: jquery object
+/// @returns object with 'type' and 'id'
+function getTypeAndId(obj)
+{
+   obj = $(obj);
+   
+   var type = "";
+   var id = "";
+
+   if(obj.length == 0)
+   {
+      console.log("getTypeAndId called with empty object");
+   }
+   else if(obj.is("[data-tr-tooltip-id]"))
+   {
+      var tooltipId = obj.attr("data-tr-tooltip-id");
+      var t = tooltipId.split(tooltipId.contains("/") ? "/" : "_");
+      if(t.length >= 2)
+      {
+         type = t[0];
+         id   = t[1];
+      }
+      else
+      {
+         obj.attr("error", "has data-tr-tooltip-id, but could not deduce type and id");
+      }
+   }
+   else if(obj.is("[href]"))
+   {
+      var href = obj.attr("href");
+      var hrefArr = href.split("/");
+
+      type = hrefArr[3];
+      id = hrefArr[4];
+   }
+   else
+   {
+      obj.attr("error", "error detecting type and id");
+   }
+
+   // "spell" and not "spells" etc. as this is what we need for wowhead
+   if(type.endsWith('s'))
+   {
+      type = type.substring(0, type.length-1);
+   }
+
+   return {
+      type: type,
+      id: id
+   }
+}
+
+function getWowheadLink(typeAndId)
+{
+   return "http://" + options.language + ".wowhead.com/" + typeAndId.type + "=" + typeAndId.id;
+}
+
 function addWowheadLinkAfterWowdbLink(link)
 {
    // each link only once
    if(link.attr("linkfix") != undefined) return;
    
-   var href = link.attr("href");
-   var hrefArr = href.split("/");
-   if(hrefArr[3] == 'items')
-   {
-      if($(".label1", link).length == 0)
-      {
-         link.attr("linkfix", options.language + " via linkfix (item, label1)");
+   var obj = getTypeAndId(link);
+   var newHref = getWowheadLink(obj);
 
-         link.after($("<a></a>").attr("target", "blank").attr("href", "http://" + options.language + ".wowhead.com/item=" + hrefArr[4]).text(options.language + ".wowhead"));
-         link.after(' ');
-      }
-      else
-      {
-         link.attr("linkfix", options.language + " via linkfix (item, non-label1)");
+   switch(obj.type)
+   {
+      case "item":
+         if($(".label1", link).length == 0)
+         {
+            link.attr("linkfix", options.language + " via linkfix (item, label1)");
+            
+            link.after($("<a></a>").attr("target", "blank").attr("href", newHref).text(options.language + ".wowhead"));
+            link.after(' ');
+         }
+         else
+         {
+            link.attr("linkfix", options.language + " via linkfix (item, non-label1)");
+            
+            link.attr("href", newHref);
+         }
+         break;
          
-         link.attr("href", "http://" + options.language + ".wowhead.com/item=" + hrefArr[4]);
-      }
-   }
-   else if(hrefArr[3] == 'spells')
-   {
-      link.attr("linkfix", options.language + " via linkfix (spell)");
+      case "spell":
+         link.attr("linkfix", options.language + " via linkfix (spell)");
       
-      link.after($("<a></a>").attr("target", "blank").attr("href", "http://" + options.language + ".wowhead.com/spell=" + hrefArr[4]).text(options.language + ".wowhead"));
-      link.after(' ');
-   }
-   else
-   {
-      link.attr("linkfix", "link_error");
+         link.after($("<a></a>").attr("target", "blank").attr("href", newHref).text(options.language + ".wowhead"));
+         link.after(' ');
+         break;
+         
+      default:
+         link.attr("linkfix", "link_error: unknown type: " + obj.type);
    }
 }
 
@@ -272,76 +331,65 @@ function translateAll()
    }
 }
 
+function backgroundImageFilter()
+{
+   return $(this).css("background-image") == "none";
+}
+
 function translateItems()
 {
-  // translate using tooltip
-   $("[data-tr-tooltip-id]").not("[translated]").each(function(){
-      var THIS = $(this);
-
-      // do not translate images
-      if(THIS.css("background-image") != "none") {
-         return;
-      }
-                                          
-      // fetch id
-      var tooltipId = THIS.attr("data-tr-tooltip-id");
-      var t = tooltipId.split("/");
-      if(t[0] != "item")
-      {
-         t = tooltipId.split("_");
-         if(t[0] == "ench") return;
-    
-         if(t[0] != "gem" /*&& t[0] != "ench"*/)
-         {
-            THIS.attr("translated", "error_type");
-            return;
-         }
-      }
-
-      translateItem(THIS, t[1]);
-   });
+  // fetch all data-tr-tooltip-id, which are not yet translated are not an image
+   $("[data-tr-tooltip-id]")
+      .not("[translated]")
+      .filter(backgroundImageFilter)
+      .each(translateItem);
    
    // translate enchant material on shopping list
-   $(".link-container[href]").not("[data-tr-tooltip-id], [translated]").each(function(){
-      var THIS = $(this);
-                                                           
-      // do not translate images
-      if(THIS.css("background-image") != "none") {
-         return;
-      }
-                                                           
-      var href = THIS.attr("href");
-      var hrefArr = href.split("=");
-      var hrefArr2 = hrefArr[0].split("/");
-                                                           
-      if((hrefArr.length < 2) || (hrefArr2[3] != 'item'))
-      {
-         return;
-      }
-                                                           
-      translateItem(THIS, hrefArr[1]);
-   });
+   $(".link-container[href]")
+      .not("[data-tr-tooltip-id], [translated]")
+      .filter(backgroundImageFilter)
+      .each(translateItem);
 
 }
 
-function translateItem(item, itemID)
+function translateItem()
 {
-   var translateInto = item;
+   var THIS = $(this);
+   var typeAndId = getTypeAndId(THIS);
    
-   if(item.children().length > 0)
+   // attempt to translate enchants in case they link to an spell
+   if(typeAndId.type == "ench")
    {
-      translateInto = $(".wlst-tname", item);
+      // find wowdb link in same row
+      var wowdbLink = $("a[href^='http://www.wowdb.com/']", THIS.siblings(".cwowdb"));
+      if(wowdbLink.length)
+      {
+         typeAndId = getTypeAndId(wowdbLink);
+      }
+   }
+   
+   if(typeAndId.type != "item" && typeAndId.type != "spell")
+   {
+      THIS.attr("translated", "Error: unsupported type " + typeAndId.type);
+      return;
+   }
+
+   var translateInto = THIS;
+   
+   if(THIS.children().length > 0)
+   {
+      translateInto = $(".wlst-tname", THIS);
 
       // that's strange, but let's try first link before failing
       if(translateInto.length == 0)
       {
-         translateInto = $("a:first-child", item);
-         item.attr("debug", "translating first link");
+         translateInto = $("a:first-child", THIS);
+         THIS.attr("debug", "translating first link");
       }
 
       if(translateInto.length == 0)
       {
-         item.attr("translated", "ERROR: element has children but the item itself was not found");
+         THIS.attr("translated", "ERROR: element has children but the THIS itself was not found");
          return;
       }
    }
@@ -352,23 +400,11 @@ function translateItem(item, itemID)
 
    
    // mark as work in progress
-   item.attr("translated", "translating");
+   THIS.attr("translated", "translating");
 
-   
    // key for cache
-   var storageKey = 'cache_' + options.language + '_item_' + itemID;
-   item.attr("cacheKey", storageKey);
-
-//      if(t[2] != undefined && (t[2][0] == 'r' && t[2][1] == ':')) {
-//         storageKey += "_" + t[2];
-//      }
-//      if(t[3] != undefined && (t[3][0] == 'r' && t[3][1] == ':')) {
-//         storageKey += "_" + t[3];
-//      }
-//      if(t[4] != undefined && (t[4][0] == 'r' && t[4][1] == ':')) {
-//         storageKey += "_" + t[4];
-//      }
-//      console.log(storageKey + " -> ");
+   var storageKey = 'cache_' + options.language + '_' + typeAndId.type + '_' + typeAndId.id;
+   THIS.attr("cacheKey", storageKey);
 
    chrome.storage.local.get(null, function(response)
    {
@@ -376,25 +412,14 @@ function translateItem(item, itemID)
       {
          var translated = response[storageKey].replace(/\\'/g, "'");
          translateInto.text(translated + suffix);
-         item.attr("translated", options.language + " via item name cache");
-         item.attr("cached", true);
+         THIS.attr("translated", options.language + " via name cache");
+         THIS.attr("cached", true);
       }
       else
       {
          var originalText = translateInto.text();
          translateInto.text("translating...");
-         var linkUrl = "http://" + options.language + ".wowhead.com/item=" + itemID + "&power";
-         
-//            if(t[2] != undefined && t[2].substring(0, 2) == 'r:') {
-//               linkUrl += '&rand=' + t[2].substring(2);
-//            }
-//            if(t[3] != undefined && t[3].substring(0, 2) == 'r:') {
-//               linkUrl += '&rand=' + t[3].substring(2);
-//            }
-//            if(t[4] != undefined && t[4].substring(0, 2) == 'r:') {
-//               linkUrl += '&rand=' + t[4].substring(2);
-//            }
-//            console.log(linkUrl);
+         var linkUrl = getWowheadLink(typeAndId) + "&power";
          
          $.get(linkUrl, {}, function(data)
          {
@@ -416,13 +441,13 @@ function translateItem(item, itemID)
                   }
                });
                translateInto.text(translated + suffix);
-               item.attr("translated", options.language + " via wowhead");
+               THIS.attr("translated", options.language + " via wowhead");
             }
             else
             {
                console.log("Translation failed: " + linkUrl);
-               item.attr("translated", "error_wowhead");
-               item.attr("orig", originalText);
+               THIS.attr("translated", "error_wowhead");
+               THIS.attr("orig", originalText);
                
                // show error and hide it again after 3 seconds
                translateInto.text("wowhead error");
