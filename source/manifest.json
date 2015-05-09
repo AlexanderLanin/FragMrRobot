@@ -13,8 +13,8 @@
   },
 
   "content_scripts": [ {
-      "matches": [ "http://www.askmrrobot.com/wow/*" ],
       "js": [ "jquery-2.1.4.min.js", "translations.js", "FragMrRobot.js" ],
+      "matches": [ "*://www.askmrrobot.com/wow/*" ],
       "run_at": "document_idle"
   },
   {
@@ -25,7 +25,7 @@
 
   "options_page": "options.html",
   
-  "permissions": [ "http://*.wowhead.com/", "storage", "tabs" ],
+  "permissions": [ "*://*.wowhead.com/", "storage", "tabs" ],
 
   "page_action": {
     "default_icon": {

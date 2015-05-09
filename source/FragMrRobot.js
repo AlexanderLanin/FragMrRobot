@@ -260,7 +260,7 @@ function getTypeAndId(obj)
 
 function getWowheadLink(typeAndId)
 {
-   return "http://" + options.language + ".wowhead.com/" + typeAndId.type + "=" + typeAndId.id;
+   return "https://" + options.language + ".wowhead.com/" + typeAndId.type + "=" + typeAndId.id;
 }
 
 function addWowheadLinkAfterWowdbLink(link)
