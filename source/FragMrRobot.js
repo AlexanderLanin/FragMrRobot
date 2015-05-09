@@ -215,17 +215,26 @@ function addWowheadLinkAfterWowdbLink(link)
    var hrefArr = href.split("/");
    if(hrefArr[3] == 'items')
    {
-      link.attr("linkfix", options.language + " via linkfix (item)");
-      
       if($(".label1", link).length == 0)
       {
-         link.after($("<a></a>").attr("href", "http://" + options.language + ".wowhead.com/item=" + hrefArr[4]).text(options.language + ".wowhead"));
+         link.attr("linkfix", options.language + " via linkfix (item, label1)");
+
+         link.after($("<a></a>").attr("target", "blank").attr("href", "http://" + options.language + ".wowhead.com/item=" + hrefArr[4]).text(options.language + ".wowhead"));
          link.after(' ');
       }
       else
       {
+         link.attr("linkfix", options.language + " via linkfix (item, non-label1)");
+         
          link.attr("href", "http://" + options.language + ".wowhead.com/item=" + hrefArr[4]);
       }
+   }
+   else if(hrefArr[3] == 'spells')
+   {
+      link.attr("linkfix", options.language + " via linkfix (spell)");
+      
+      link.after($("<a></a>").attr("target", "blank").attr("href", "http://" + options.language + ".wowhead.com/spell=" + hrefArr[4]).text(options.language + ".wowhead"));
+      link.after(' ');
    }
    else
    {
