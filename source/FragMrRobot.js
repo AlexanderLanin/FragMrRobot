@@ -252,6 +252,11 @@ function getTypeAndId(obj)
       type = type.substring(0, type.length-1);
    }
 
+   if(type == "gem")
+   {
+      type = "item";
+   }
+
    return {
       type: type,
       id: id
@@ -389,7 +394,7 @@ function translateItem()
 
       if(translateInto.length == 0)
       {
-         THIS.attr("translated", "ERROR: element has children but the THIS itself was not found");
+         THIS.attr("translated", "ERROR: element has children but the item itself was not found");
          return;
       }
    }
