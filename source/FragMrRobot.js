@@ -241,6 +241,14 @@ function getTypeAndId(obj)
       type = hrefArr[3];
       id = hrefArr[4];
    }
+   else if(obj.is("[data-tooltip-href]"))
+   {
+      var href = obj.attr("data-tooltip-href");
+      var hrefArr = href.split("/");
+      
+      type = hrefArr[3];
+      id = hrefArr[4];
+   }
    else
    {
       obj.attr("error", "error detecting type and id");
@@ -354,6 +362,11 @@ function translateItems()
       .not("[data-tr-tooltip-id], [translated]")
       .filter(backgroundImageFilter)
       .each(translateItem);
+   
+   // translate talents and glyphs
+   $("[data-tooltip-href]")
+      .not("[translated]")
+      .each(translateItem);
 
 }
 
@@ -384,6 +397,12 @@ function translateItem()
    if(THIS.children().length > 0)
    {
       translateInto = $(".wlst-tname", THIS);
+
+      // talents, glyphs have a label:
+      if(translateInto.length == 0)
+      {
+         translateInto = $(".wst-icon-lbl", THIS);
+      }
 
       // that's strange, but let's try first link before failing
       if(translateInto.length == 0)
